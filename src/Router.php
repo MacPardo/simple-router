@@ -7,7 +7,8 @@ class Router {
 
   private $request;
   private $response;
-  private $paths;
+  private $paths = [];
+  private $base_path = "";
 
   public function __construct() {
     $this->request = new Request();
@@ -26,7 +27,7 @@ class Router {
   }
 
   public function use(Router $router) {
-    
+
   }
 
 }
