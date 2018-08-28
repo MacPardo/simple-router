@@ -23,7 +23,7 @@ class Router {
   }
 
   public function basePath(string $base_path) {
-
+    $this->base_path = $base_path;
   }
 
   public function use(Router $router) {
