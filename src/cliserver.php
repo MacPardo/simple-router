@@ -1,7 +1,5 @@
 <?php
 
-namespace HeroProject;
-
 if (php_sapi_name() !== 'cli-server') {
   die('only for the built-in php server');
 }
