@@ -4,4 +4,10 @@ namespace Router;
 
 require_once 'vendor/autoload.php';
 
-echo 'hello';
+echo 'hello<br>';
+
+$router = new Router();
+
+$router->on('GET', '/teste/lalal', function() {
+
+});
