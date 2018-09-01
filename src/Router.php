@@ -12,16 +12,6 @@ class Router {
     $this->request = new Request();
   }
 
-  private function filterEmptyString(array $array): array {
-    return array_filter($array, function($el) {
-      return $el !== '';
-    });
-  }
-
-  private function getPathArray(string $path): array {
-    return $this->filterEmptyString(explode('/', $path));
-  }
-
   public function on(string $method, string $path, Callable $callback): Router {
 
     $method = strtoupper($method);

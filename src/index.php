@@ -11,3 +11,16 @@ $router = new Router();
 $router->on('GET', '/teste/lalal', function() {
 
 });
+
+
+$router->on('GET', '/teste/lalal', function() {
+
+});
+
+$router->on('GET', '/books/:param', function() {
+
+});
+
+$router->on('GET', ':param/:param/', function() {
+
+});
