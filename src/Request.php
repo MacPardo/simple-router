@@ -17,7 +17,7 @@ class Request {
     $uri = $_SERVER['REQUEST_URI'];
     $parsed_url = parse_url($uri);
 
-    $this->path = $parsed_url['path'];
+    $this->path = trim($parsed_url['path'], '/');
 
     if (isset($parsed_url['query'])) {
       $query_parts = explode('&', $parsed_url['query']);

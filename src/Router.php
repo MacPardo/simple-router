@@ -26,20 +26,26 @@ class Router {
 
     $method = strtoupper($method);
 
-    $path_array = $this->getPathArray($path);
-    print_r($path_array);
-
     if (!isset($this->routes[$method])) {
       $this->routes[$method] = [];
     }
 
-    $this->routes[$method][] = $path_array;
+    $path = trim($path, '/');
 
+    $this->routes[$method][$path] = $callback;
+
+    print_r($this->routes);
     return $this;
   }
 
   public function run(): bool {
-    return subRun($this->getPathArray($this->request->path));
+    if (!isset($this->routes[$this->request->method])) {
+      return false;
+    }
+
+    $routes = $this->routes[$this->request->method];
+
+
   }
-  
+
 }
