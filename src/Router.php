@@ -7,8 +7,6 @@ class Router {
 
   private $request;
   private $routes = []; // [method => [route => callback]]
-  private $basePath = "";
-  private $subRouters = [];
 
   public function __construct() {
     $this->request = new Request();
@@ -20,11 +18,15 @@ class Router {
     });
   }
 
+  private function getPathArray(string $path): array {
+    return $this->filterEmptyString(explode('/', $path));
+  }
+
   public function on(string $method, string $path, Callable $callback): Router {
 
     $method = strtoupper($method);
 
-    $path_array = $this->filterEmptyString(explode('/', $path));
+    $path_array = $this->getPathArray($path);
     print_r($path_array);
 
     if (!isset($this->routes[$method])) {
@@ -37,16 +39,7 @@ class Router {
   }
 
   public function run(): bool {
-        
-    return false;
+    return subRun($this->getPathArray($this->request->path));
   }
-
-  public function basePath(string $base_path) {
-    $this->basePath = $basePath;
-  }
-
-  public function use(Router $router) {
-    $this->subRouters[] = $router;
-  }
-
+  
 }
