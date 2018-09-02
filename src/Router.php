@@ -28,6 +28,19 @@ class Router {
     return $this;
   }
 
+  private function getParams(string $path) {
+
+    $params = [];
+
+    foreach (explode('/', $path) as $part) {
+      if (preg_match('@^:@', $part)) {
+        $params[] = ltrim($part, ':');
+      }
+    }
+
+    return $params;
+  }
+
   public function run(): bool {
     if (!isset($this->routes[$this->request->method])) {
       return false;
@@ -35,7 +48,30 @@ class Router {
 
     $routes = $this->routes[$this->request->method];
 
+    foreach ($routes as $path => $callback) {
+      $params = $this->getParams($path);
+      $regex = '@^' . preg_replace('(:\w+)', '(\w+)', $path) . '$@';
 
+      if (preg_match($regex, $this->request->path, $matches)) {
+        array_shift($matches);
+        print_r($matches);
+
+        foreach ($matches as $index => $val) {
+          $this->request->addParam($params[$index], $val);
+        }
+
+        // $callback($this->request);
+
+        echo "everything is fine :)";
+        print_r($callback);
+
+        call_user_func_array($callback, [$this->request]);
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }
