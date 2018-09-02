@@ -21,7 +21,7 @@ $router->on('GET', '/teste/lalal', function() {
 
 });
 
-$router->on('GET', '/books/:book_name', function($req) {
+$router->on('GET', 'books/:book_name', function($req) {
 ?>
 <h1><?= $req->params['book_name'] ?></h1>
 <p>the query is <?php print_r($req->query)?></p>
@@ -32,11 +32,18 @@ $router->on('GET', ':param/:param/', function() {
   echo 'This other stuff is working too';
 });
 
-$router->on('POST', '/:param', function($req) {
-  echo 'the param is ' . $req->params['param'] . " and the body is \n";
-  print_r($req->jsonBody);
-});
+// $router->on('POST', '/:param', function($req) {
+//   echo 'the param is ' . $req->params['param'] . " and the body is \n";
+//   print_r($req->jsonBody);
+// });
 
 $router->base('/api/');
+
+$relativeRouter = new Router();
+$relativeRouter->on('GET', '/', function($req) {
+  echo "\nFISHES ARE SO COOL\n";
+});
+
+$router->use($relativeRouter);
 
 $router->run();

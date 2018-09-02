@@ -52,7 +52,7 @@ class Router {
     foreach ($routes as $path => $callback) {
 
       $path = trim(
-        trim($this->basePath, '/') . '/' . $path,
+        $this->basePath . '/' . $path,
         '/'
       );
 
@@ -71,6 +71,17 @@ class Router {
       }
     }
 
+    $rightPath = preg_replace('@(^' . $this->basePath . '(/|$))@', '', $relativePath);
+
+    echo "rightPath is \n";
+    print_r($rightPath);
+
+    foreach ($this->subRouters as $subRouter) {
+      if ($subRouter->relativeRun($rightPath)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -84,7 +95,7 @@ class Router {
   }
 
   public function base(string $basePath): Router {
-    $this->basePath = $basePath;
+    $this->basePath = trim($basePath, '/');
     return $this;
   }
 
