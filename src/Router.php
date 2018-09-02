@@ -24,7 +24,6 @@ class Router {
 
     $this->routes[$method][$path] = $callback;
 
-    print_r($this->routes);
     return $this;
   }
 
@@ -54,17 +53,10 @@ class Router {
 
       if (preg_match($regex, $this->request->path, $matches)) {
         array_shift($matches);
-        print_r($matches);
 
         foreach ($matches as $index => $val) {
           $this->request->addParam($params[$index], $val);
         }
-
-        // $callback($this->request);
-
-        echo "everything is fine :)";
-        print_r($callback);
-
         call_user_func_array($callback, [$this->request]);
 
         return true;

@@ -33,6 +33,6 @@ class Request {
   }
 
   public function addParam(string $name, string $value) {
-    $params[$name] = $value;
+    $this->params[$name] = $value;
   }
 }
