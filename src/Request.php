@@ -9,6 +9,8 @@ class Request {
   private $query = []; // [string => string]
   private $method; // string
   private $params = []; // [string => string]
+  private $body = "";
+  private $jsonBody = [];
 
   public function __construct() {
 
@@ -26,6 +28,14 @@ class Request {
         $this->query[$pair[0]] = $pair[1];
       }, $query_parts);
     }
+
+    $this->body = file_get_contents('php://input');
+    $jsonBody = json_decode($this->body);
+
+    if (json_last_error() === JSON_ERROR_NONE) {
+      $this->jsonBody = $jsonBody;
+    }
+
   }
 
   public function __get($name) {
