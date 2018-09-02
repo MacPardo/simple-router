@@ -73,9 +73,6 @@ class Router {
 
     $rightPath = preg_replace('@(^' . $this->basePath . '(/|$))@', '', $relativePath);
 
-    echo "rightPath is \n";
-    print_r($rightPath);
-
     foreach ($this->subRouters as $subRouter) {
       if ($subRouter->relativeRun($rightPath)) {
         return true;
