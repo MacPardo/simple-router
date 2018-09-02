@@ -7,6 +7,8 @@ class Router {
 
   private $request;
   private $routes = []; // [method => [route => callback]]
+  private $subRouters = [];
+  private $basePath = '';
 
   public function __construct() {
     $this->request = new Request();
@@ -40,7 +42,7 @@ class Router {
     return $params;
   }
 
-  public function run(): bool {
+  public function relativeRun(string $relativePath): bool {
     if (!isset($this->routes[$this->request->method])) {
       return false;
     }
@@ -48,10 +50,16 @@ class Router {
     $routes = $this->routes[$this->request->method];
 
     foreach ($routes as $path => $callback) {
+
+      $path = trim(
+        trim($this->basePath, '/') . '/' . $path,
+        '/'
+      );
+
       $params = $this->getParams($path);
       $regex = '@^' . preg_replace('(:\w+)', '(\w+)', $path) . '$@';
 
-      if (preg_match($regex, $this->request->path, $matches)) {
+      if (preg_match($regex, $relativePath, $matches)) {
         array_shift($matches);
 
         foreach ($matches as $index => $val) {
@@ -64,6 +72,20 @@ class Router {
     }
 
     return false;
+  }
+
+  public function run(): bool {
+    return $this->relativeRun($this->request->path);
+  }
+
+  public function use(Router $router): Router {
+    $this->subRouters[] = $router;
+    return $this;
+  }
+
+  public function base(string $basePath): Router {
+    $this->basePath = $basePath;
+    return $this;
   }
 
 }

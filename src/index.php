@@ -37,4 +37,6 @@ $router->on('POST', '/:param', function($req) {
   print_r($req->jsonBody);
 });
 
+$router->base('/api/');
+
 $router->run();
